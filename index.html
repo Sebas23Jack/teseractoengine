@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teseracto Engine | Software de Gestión Empresarial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        /* Navegación elegante - más clara */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-links a.active {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+            border-radius: 2px;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            color: #ffffff !important;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+            color: #ffffff !important;
+        }
+
+        /* Hero con estilo - más claro */
+        .hero {
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 120px 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: #ffffff;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .hero-button-primary {
+            background: #ffffff;
+            color: #2563eb;
+            text-decoration: none;
+            padding: 18px 45px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .hero-button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -5px rgba(0,0,0,0.3);
+        }
+
+        .hero-button-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 18px 45px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .hero-button-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Contenedor */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 100px 40px;
+        }
+
+        /* Títulos de sección */
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #64748b;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Grid de características */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: #ffffff;
+            padding: 45px 35px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.1);
+            border-color: #2563eb;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 30px;
+            color: #2563eb;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* Sección de producto */
+        .product-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 70px;
+            margin-top: 40px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-info h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+
+        .product-info p {
+            color: #64748b;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .product-features-list {
+            list-style: none;
+            margin: 40px 0;
+        }
+
+        .product-features-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #475569;
+            font-size: 16px;
+        }
+
+        .product-features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .product-features-list li::before {
+            content: '✓';
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 20px;
+            background: #dbeafe;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .product-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .product-button-primary {
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px 35px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+        }
+
+        .product-button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -5px rgba(37, 99, 235, 0.4);
+        }
+
+        .product-button-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            text-decoration: none;
+            padding: 16px 35px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .product-button-secondary:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .product-image {
+            position: relative;
+        }
+
+        .dashboard-preview {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 25px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 16px 16px 0 0;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 0 0 16px 16px;
+            border: 1px solid #e2e8f0;
+            border-top: none;
+        }
+
+        .dashboard-stat {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            color: #2563eb;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Planes de precios */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .pricing-card {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px -10px rgba(37, 99, 235, 0.15);
+            border-color: #2563eb;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #2563eb;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: 'MÁS POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .pricing-header h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 800;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .price small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #64748b;
+        }
+
+        .savings {
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #475569;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .pricing-button {
+            display: block;
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .pricing-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .gallery-item {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.1);
+        }
+
+        .gallery-image {
+            height: 200px;
+            background: linear-gradient(135deg, #2563eb, #60a5fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .gallery-content {
+            padding: 25px;
+        }
+
+        .gallery-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .gallery-content p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Contacto */
+        .contact-section {
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 70px;
+            margin-top: 40px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .contact-info h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            color: #64748b;
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .contact-details {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+        }
+
+        .contact-text strong {
+            display: block;
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .contact-text span {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .office-hours {
+            margin-top: 30px;
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .office-hours p {
+            margin: 5px 0;
+            color: #475569;
+        }
+
+        .contact-form {
+            background: #f8fafc;
+            border-radius: 32px;
+            padding: 40px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.2s;
+            background: #ffffff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            color: #ffffff;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #ffffff;
+            color: #64748b;
+            padding: 60px 40px 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 20px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .footer-about {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-links h4 {
+            color: #1e293b;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .footer-links a {
+            display: block;
+            color: #64748b;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #2563eb;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid,
+            .gallery-grid,
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features-grid,
+            .gallery-grid,
+            .pricing-grid,
+            .product-showcase,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-showcase,
+            .contact-section {
+                padding: 40px 20px;
+            }
+            
+            .container {
+                padding: 60px 20px;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">TESERACTO ENGINE</a>
+            <div class="nav-links">
+                <a href="#" class="active">Inicio</a>
+                <a href="#producto">Producto</a>
+                <a href="#planes">Planes</a>
+                <a href="#galeria">Galería</a>
+                <a href="#contacto">Contacto</a>
+                <a href="#contacto" class="nav-button">Demo gratuita</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Software de gestión empresarial en la nube</h1>
+            <p>Una plataforma integral para administrar inventario, ventas y operaciones de su negocio con eficiencia y seguridad</p>
+            <div class="hero-buttons">
+                <a href="#contacto" class="hero-button-primary">Solicitar demo</a>
+                <a href="#producto" class="hero-button-secondary">Conocer más</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Características -->
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">CARACTERÍSTICAS</span>
+            <h2 class="section-title">Características principales</h2>
+            <p class="section-subtitle">Diseñado para optimizar los procesos operativos de su empresa</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Gestión de inventario</h3>
+                <p>Control de stock, alertas automáticas y trazabilidad de productos en tiempo real.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💳</div>
+                <h3>Facturación electrónica</h3>
+                <p>Generación de comprobantes electrónicos autorizados por el SRI con envío automático.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Reportes gerenciales</h3>
+                <p>Estadísticas de ventas, rentabilidad y comportamiento de clientes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Administración de clientes</h3>
+                <p>Base de datos con historial de compras y segmentación para campañas.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Órdenes de servicio</h3>
+                <p>Seguimiento de reparaciones y gestión de servicios técnicos profesionales.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Acceso multiplataforma</h3>
+                <p>Disponible en web, tablet y móvil para gestionar su negocio desde cualquier lugar.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto -->
+    <section id="producto" class="container">
+        <div class="section-header">
+            <span class="section-tag">PLATAFORMA</span>
+            <h2 class="section-title">Conozca Teseracto Engine</h2>
+            <p class="section-subtitle">Una solución completa para la gestión de su negocio</p>
+        </div>
+
+        <div class="product-showcase">
+            <div class="product-info">
+                <h2>Teseracto Engine: todo lo que su negocio necesita</h2>
+                <p>Plataforma desarrollada para negocios comerciales y de servicios que buscan profesionalizar su operación con herramientas tecnológicas accesibles.</p>
+                
+                <ul class="product-features-list">
+                    <li><strong>Dashboard ejecutivo</strong> con métricas en tiempo real</li>
+                    <li><strong>Gestión multi-sucursal</strong> centralizada</li>
+                    <li><strong>Respaldo automático</strong> en la nube</li>
+                    <li><strong>Soporte técnico</strong> prioritario 24/7</li>
+                    <li><strong>Actualizaciones</strong> continuas sin costo adicional</li>
+                </ul>
+
+                <div class="product-buttons">
+                    <a href="#contacto" class="product-button-primary">Solicitar demo</a>
+                    <a href="#contacto" class="product-button-secondary">Hablar con asesor</a>
+                </div>
+            </div>
+
+            <div class="product-image">
+                <div class="dashboard-preview">
+                    <div class="dashboard-header">Panel de control - Resumen ejecutivo</div>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-stat">
+                            <div class="stat-label">Ventas del mes</div>
+                            <div class="stat-value">$45,230</div>
+                        </div>
+                        <div class="dashboard-stat">
+                            <div class="stat-label">Facturas</div>
+                            <div class="stat-value">328</div>
+                        </div>
+                        <div class="dashboard-stat">
+                            <div class="stat-label">Productos en stock</div>
+                            <div class="stat-value">1,245</div>
+                        </div>
+                        <div class="dashboard-stat">
+                            <div class="stat-label">Clientes activos</div>
+                            <div class="stat-value">187</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 15px; color: #64748b; font-size: 13px;">*Representación ilustrativa del sistema</p>
+            </div>
+        </div>
+    </section>
+    <!-- Planes Mensuales -->
+    <section id="planes" class="container">
+        <div class="section-header">
+            <span class="section-tag">PRECIOS</span>
+            <h2 class="section-title">Planes mensuales</h2>
+            <p class="section-subtitle">Elige el plan que se adapta a las necesidades de tu negocio</p>
+        </div>
+    
+        <div class="pricing-grid">
+    
+            <!-- Plan Básico -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Básico</h3>
+                    <div class="price">$15<small>/mes</small></div>
+                </div>
+    
+                <ul class="pricing-features">
+                    <li><strong>Ideal para:</strong> pequeños comercios y emprendedores</li>
+                    <li>Gestión de inventario</li>
+                    <li>Registro de productos</li>
+                    <li>Control de stock</li>
+                    <li>Alertas de inventario bajo</li>
+                    <li>Reportes básicos</li>
+                    <li>1 usuario</li>
+                </ul>
+    
+                <a href="#contacto" class="pricing-button">Comenzar prueba</a>
+            </div>
+    
+            <!-- Plan PYMES -->
+            <div class="pricing-card featured">
+                <div class="pricing-header">
+                    <h3>PYMES</h3>
+                    <div class="price">$39<small>/mes</small></div>
+                </div>
+    
+                <ul class="pricing-features">
+                    <li><strong>Ideal para:</strong> tiendas de ropa, tecnología y comida</li>
+                    <li>Todo lo del plan Básico</li>
+                    <li>Sistema completo de ventas</li>
+                    <li>Gestión de clientes (CRM)</li>
+                    <li>Reportes de ventas</li>
+                    <li>Control de ingresos</li>
+                    <li>Panel administrativo</li>
+                    <li>3 usuarios</li>
+                    <li>Soporte prioritario</li>
+                </ul>
+    
+                <a href="#contacto" class="pricing-button">Elegir plan</a>
+            </div>
+    
+            <!-- Plan Empresarial -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Empresarial</h3>
+                    <div class="price">$89<small>/mes</small></div>
+                </div>
+    
+                <ul class="pricing-features">
+                    <li><strong>Ideal para:</strong> empresas en crecimiento y cadenas de tiendas</li>
+                    <li>Todo lo del plan PYMES</li>
+                    <li>Facturación electrónica</li>
+                    <li>Gestión de caja</li>
+                    <li>Gestión de proveedores</li>
+                    <li>Reportes avanzados</li>
+                    <li>Usuarios y roles</li>
+                    <li>Órdenes de servicio</li>
+                    <li>Estadísticas y análisis del negocio</li>
+                    <li>Usuarios ilimitados</li>
+                    <li>Soporte 24/7</li>
+                </ul>
+    
+                <a href="#contacto" class="pricing-button">Contactar ventas</a>
+            </div>
+    
+        </div>
+    </section>
+    
+    
+    <!-- Planes Anuales -->
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">AHORRO</span>
+            <h2 class="section-title">Planes anuales</h2>
+            <p class="section-subtitle">Ahorra hasta 2 meses con pago anual</p>
+        </div>
+    
+        <div class="pricing-grid">
+    
+            <!-- Básico anual -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Básico Anual</h3>
+                    <div class="price">$140<small>/año</small></div>
+                    <div class="savings">Ahorras $40</div>
+                </div>
+    
+                <ul class="pricing-features">
+                    <li>Ideal para pequeños negocios</li>
+                    <li>Gestión de inventario</li>
+                    <li>Registro de productos</li>
+                    <li>Control de stock</li>
+                    <li>Alertas de inventario</li>
+                    <li>Reportes básicos</li>
+                    <li>Pago único anual</li>
+                    <li>Soporte por email</li>
+                </ul>
+    
+                <a href="#contacto" class="pricing-button">Contratar</a>
+            </div>
+    
+            <!-- PYMES anual -->
+            <div class="pricing-card featured">
+                <div class="pricing-header">
+                    <h3>PYMES Anual</h3>
+                    <div class="price">$399<small>/año</small></div>
+                    <div class="savings">Ahorras $69</div>
+                </div>
+    
+                <ul class="pricing-features">
+                    <li>Todo lo del plan Básico</li>
+                    <li>Sistema de ventas</li>
+                    <li>Gestión de clientes</li>
+                    <li>Reportes de ventas</li>
+                    <li>Control de ingresos</li>
+                    <li>Panel administrativo</li>
+                    <li>Pago único anual</li>
+                    <li>Soporte prioritario</li>
+                </ul>
+    
+                <a href="#contacto" class="pricing-button">Contratar</a>
+            </div>
+    
+            <!-- Empresarial anual -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Empresarial Anual</h3>
+                    <div class="price">$890<small>/año</small></div>
+                    <div class="savings">Ahorras $178</div>
+                </div>
+    
+                <ul class="pricing-features">
+                    <li>Todos los módulos del sistema</li>
+                    <li>Facturación electrónica</li>
+                    <li>Gestión de caja</li>
+                    <li>Proveedores</li>
+                    <li>Reportes avanzados</li>
+                    <li>Usuarios y roles</li>
+                    <li>Órdenes de servicio</li>
+                    <li>Estadísticas del negocio</li>
+                    <li>Pago único anual</li>
+                    <li>Soporte 24/7</li>
+                </ul>
+    
+                <a href="#contacto" class="pricing-button">Contratar</a>
+            </div>
+    
+        </div>
+    </div>
+<!-- Galería -->
+<section id="galeria" class="container">
+    <div class="section-header">
+        <span class="section-tag">GALERÍA</span>
+        <h2 class="section-title">Galería del sistema</h2>
+        <p class="section-subtitle">Vistas principales del módulo de inventario y gestión</p>
+    </div>
+
+    <div class="gallery-grid">
+
+        <div class="gallery-item">
+            <div class="gallery-image">
+                <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789" alt="Módulo inventario">
+            </div>
+            <div class="gallery-content">
+                <h3>Control de existencias</h3>
+                <p>Vista general del inventario con filtros y búsqueda avanzada en tiempo real.</p>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <div class="gallery-image">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" alt="Dashboard sistema">
+            </div>
+            <div class="gallery-content">
+                <h3>Panel principal</h3>
+                <p>Indicadores de gestión y métricas clave del negocio.</p>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <div class="gallery-image">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d" alt="Facturación electrónica">
+            </div>
+            <div class="gallery-content">
+                <h3>Facturación electrónica</h3>
+                <p>Generación y envío automático de comprobantes electrónicos.</p>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <div class="gallery-image">
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d" alt="Gestión de stock">
+            </div>
+            <div class="gallery-content">
+                <h3>Movimientos de bodega</h3>
+                <p>Control de entradas, salidas y ajustes de inventario.</p>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <div class="gallery-image">
+                <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4" alt="Reportes sistema">
+            </div>
+            <div class="gallery-content">
+                <h3>Reportes personalizados</h3>
+                <p>Análisis personalizados exportables a PDF y Excel.</p>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <div class="gallery-image">
+                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c" alt="Sistema móvil">
+            </div>
+            <div class="gallery-content">
+                <h3>Acceso multiplataforma</h3>
+                <p>Interfaz adaptada para dispositivos móviles y tablets.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+    <!-- Contacto -->
+    <section id="contacto" class="container">
+        <div class="section-header">
+            <span class="section-tag">CONTACTO</span>
+            <h2 class="section-title">Solicite una demostración</h2>
+            <p class="section-subtitle">
+                Nuestro equipo le mostrará cómo Teseracto Engine puede adaptarse a su negocio
+            </p>
+        </div>
+    
+        <div class="contact-section">
+            <div class="contact-grid">
+    
+                <div class="contact-info">
+                    <h2>¿Listo para transformar su negocio?</h2>
+                    <p>
+                        Contáctenos directamente para agendar una demostración del sistema.
+                        Nuestro equipo le explicará cómo Teseracto Engine puede ayudarle a
+                        controlar ventas, inventario, clientes y finanzas en un solo lugar.
+                    </p>
+    
+                    <div class="contact-details">
+    
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-text">
+                                <strong>Email comercial</strong>
+                                <span>jhonnatanporras23@gmail.com</span>
+                            </div>
+                        </div>
+    
+                        <div class="contact-item">
+                            <div class="contact-icon">💬</div>
+                            <div class="contact-text">
+                                <strong>WhatsApp Business</strong>
+                                <span>+593 958 806 224</span>
+                            </div>
+                        </div>
+    
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-text">
+                                <strong>Ubicación</strong>
+                                <span>Quito - Ecuador</span>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <div class="office-hours">
+                        <p><strong>Horario de atención</strong></p>
+                        <p>Lunes a viernes: 8:30 - 18:00</p>
+                        <p>Sábados: 9:00 - 13:00</p>
+                        <p style="margin-top:15px;">Tiempo de respuesta aproximado: 24 horas</p>
+                    </div>
+    
+                    <div style="margin-top:30px;">
+                        <a href="https://wa.me/qr/LVLXE3OHOEAAC1" class="pricing-button">
+                            Contactar por WhatsApp
+                        </a>
+                    </div>
+    
+                </div>
+    
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <a href="#" class="footer-logo">TESERACTO ENGINE</a>
+                <p class="footer-about">Software de gestión empresarial en la nube diseñado para optimizar las operaciones de su negocio.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Producto</h4>
+                <a href="#producto">Características</a>
+                <a href="#galeria">Galería</a>
+                <a href="#planes">Precios</a>
+                <a href="#contacto">Demo</a>
+            </div>
+            
+            
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Teseracto Engine. Todos los derechos reservados. Desarrollado en Ecuador.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Actualizar clase activa
+                    document.querySelectorAll('.nav-links a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Detectar sección activa durante el scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if(window.scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- GitHub: Subir como index.html -->
+</body>
+
+</html>
+
